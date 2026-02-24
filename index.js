@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+const PORT = 3000;
+
 // adding json parsing middleware
 app.use(express.json());
 
@@ -16,10 +18,14 @@ app.get('/', (req, res) => {
 });
 
 
+app.post('/user', (req, res) => {
+  const { name, email } = req.body || {};
 
-app.post('/User', (req, res) => {
-  const {name,email} = req.body;
-  res.send(`User Created: Hello ${name}, ${email}`);
+  if (!name || !email) {
+    return res.status(400).json({ error: "Name and email are required" });
+  }
+
+  res.json({ message: "User created", name, email });
 });
 
 // error handler for missing data
